@@ -96,7 +96,7 @@ void main() {
               }
             ]
           }),
-          (ByteData data) {},
+          (ByteData? data) {},
         );
         return;
       }
@@ -117,7 +117,7 @@ void main() {
         }).toList();
 
         regions.forEach((region) {
-          dynamic result;
+          dynamic? result;
           if (region.identifier == 'onEnter') {
             result = {
               'region': region.toJson,
@@ -141,7 +141,7 @@ void main() {
                 .handlePlatformMessage(
               monitoringChannel.name,
               const StandardMethodCodec().encodeSuccessEnvelope(result),
-              (ByteData data) {},
+              (ByteData? data) {},
             );
           }
         });
@@ -156,7 +156,7 @@ void main() {
       ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
         bluetoothChannel.name,
         const StandardMethodCodec().encodeSuccessEnvelope('STATE_ON'),
-        (ByteData data) {},
+        (ByteData? data) {},
       );
     });
 
@@ -165,7 +165,7 @@ void main() {
       ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
         authorizationChannel.name,
         const StandardMethodCodec().encodeSuccessEnvelope('ALLOWED'),
-        (ByteData data) {},
+        (ByteData? data) {},
       );
     });
   });
@@ -276,7 +276,7 @@ void main() {
   });
 
   group('Event channel - monitoring', () {
-    Stream<MonitoringResult> stream;
+    Stream<MonitoringResult>? stream;
 
     setUpAll(() {
       final regions = <Region>[
@@ -304,7 +304,7 @@ void main() {
     });
 
     test('didEnterRegion', () async {
-      final result = await stream.first;
+      final result = await stream!.first;
 
       expect(result.region, isNotNull);
       expect(result.region.identifier, 'onEnter');
@@ -317,7 +317,7 @@ void main() {
     });
 
     test('didExitRegion', () async {
-      final result = await stream.elementAt(2);
+      final result = await stream!.elementAt(2);
 
       expect(result.region, isNotNull);
       expect(result.region.identifier, 'onExit');
@@ -330,7 +330,7 @@ void main() {
     });
 
     test('didDetermineStateForRegion', () async {
-      final result = await stream.elementAt(3);
+      final result = await stream!.elementAt(3);
 
       expect(result.region, isNotNull);
       expect(result.region.identifier, 'onDetermine');

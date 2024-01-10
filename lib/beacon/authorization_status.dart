@@ -10,10 +10,10 @@ class AuthorizationStatus {
   final String value;
 
   /// This will `true` only if this authorization status suit Android system.
-  final bool isAndroid;
+  final bool? isAndroid;
 
   /// This will `true` only if this authorization status suit iOS system.
-  final bool isIOS;
+  final bool? isIOS;
 
   @visibleForTesting
   const AuthorizationStatus.init(
@@ -39,7 +39,7 @@ class AuthorizationStatus {
         return notDetermined;
     }
 
-    return null;
+    throw ArgumentError('Invalid Authorization Status.');
   }
 
   /// Shows that user allowed the authorization.

@@ -10,32 +10,32 @@ enum Proximity { unknown, immediate, near, far }
 /// Class for managing Beacon object.
 class Beacon {
   /// The proximity UUID of beacon.
-  final String proximityUUID;
+  final String? proximityUUID;
 
   /// The mac address of beacon.
   ///
   /// From iOS this value will be null
-  final String macAddress;
+  final String? macAddress;
 
   /// The major value of beacon.
-  final int major;
+  final int? major;
 
   /// The minor value of beacon.
-  final int minor;
+  final int? minor;
 
   /// The rssi value of beacon.
-  final int rssi;
+  final int? rssi;
 
   /// The transmission power of beacon.
   ///
   /// From iOS this value will be null
-  final int txPower;
+  final int? txPower;
 
   /// The accuracy of distance of beacon in meter.
-  final double accuracy;
+  final double? accuracy;
 
   /// The proximity of beacon.
-  final Proximity _proximity;
+  final Proximity? _proximity;
 
   /// Create beacon object.
   const Beacon({
@@ -46,7 +46,7 @@ class Beacon {
     this.rssi,
     this.txPower,
     this.accuracy,
-    Proximity proximity,
+    Proximity? proximity,
   }) : this._proximity = proximity;
 
   /// Create beacon object from json.
@@ -65,7 +65,7 @@ class Beacon {
   /// Parsing dynamic data into double.
   static double _parseDouble(dynamic data) {
     if (data is num) {
-      return data;
+      return data.toDouble();
     } else if (data is String) {
       return double.tryParse(data) ?? 0.0;
     }
@@ -76,7 +76,7 @@ class Beacon {
   /// Parsing dynamic data into integer.
   static int _parseInt(dynamic data) {
     if (data is num) {
-      return data;
+      return data.toInt();
     } else if (data is String) {
       return int.tryParse(data) ?? 0;
     }
@@ -106,7 +106,7 @@ class Beacon {
   }
 
   /// Parsing array of [Map] into [List] of [Beacon].
-  static List<Beacon> beaconFromArray(dynamic beacons) {
+  static List<Beacon>? beaconFromArray(dynamic beacons) {
     if (beacons is List) {
       return beacons.map((json) {
         return Beacon.fromJson(json);
@@ -152,18 +152,18 @@ class Beacon {
   /// - `accuracy > 3.0` : [Proximity.far]
   Proximity get proximity {
     if (_proximity != null) {
-      return _proximity;
+      return _proximity!;
     }
 
     if (accuracy == 0.0) {
       return Proximity.unknown;
     }
 
-    if (accuracy <= 0.5) {
+    if (accuracy! <= 0.5) {
       return Proximity.immediate;
     }
 
-    if (accuracy < 3.0) {
+    if (accuracy! < 3.0) {
       return Proximity.near;
     }
 

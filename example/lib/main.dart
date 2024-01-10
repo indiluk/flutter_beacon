@@ -17,8 +17,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final StreamController<BluetoothState> streamController = StreamController();
-  StreamSubscription<BluetoothState> _streamBluetooth;
-  StreamSubscription<RangingResult> _streamRanging;
+  StreamSubscription<BluetoothState>? _streamBluetooth;
+  StreamSubscription<RangingResult>? _streamRanging;
   final _regionBeacons = <Region, List<Beacon>>{};
   final _beacons = <Beacon>[];
   bool authorizationStatusOk = false;
@@ -90,8 +90,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     ];
 
     if (_streamRanging != null) {
-      if (_streamRanging.isPaused) {
-        _streamRanging.resume();
+      if (_streamRanging!.isPaused) {
+        _streamRanging!.resume();
         return;
       }
     }
@@ -122,14 +122,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   int _compareParameters(Beacon a, Beacon b) {
-    int compare = a.proximityUUID.compareTo(b.proximityUUID);
+    int compare = a.proximityUUID!.compareTo(b.proximityUUID!);
 
     if (compare == 0) {
-      compare = a.major.compareTo(b.major);
+      compare = a.major!.compareTo(b.major!);
     }
 
     if (compare == 0) {
-      compare = a.minor.compareTo(b.minor);
+      compare = a.minor!.compareTo(b.minor!);
     }
 
     return compare;
@@ -139,8 +139,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     print('AppLifecycleState = $state');
     if (state == AppLifecycleState.resumed) {
-      if (_streamBluetooth != null && _streamBluetooth.isPaused) {
-        _streamBluetooth.resume();
+      if (_streamBluetooth != null && _streamBluetooth!.isPaused) {
+        _streamBluetooth!.resume();
       }
       await checkAllRequirements();
       if (authorizationStatusOk && locationServiceEnabled && bluetoothEnabled) {
@@ -250,7 +250,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     context: context,
                     tiles: _beacons.map((beacon) {
                       return ListTile(
-                        title: Text(beacon.proximityUUID),
+                        title: Text(beacon.proximityUUID!),
                         subtitle: new Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[

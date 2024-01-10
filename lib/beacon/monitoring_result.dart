@@ -29,12 +29,12 @@ class MonitoringResult {
 
   /// Constructor for deserialize dynamic json into [MonitoringResult].
   MonitoringResult.from(dynamic json)
-      : this.monitoringEventType = _parseMonitoringEventType(json['event']),
-        this.monitoringState = _parseMonitoringState(json['state']),
+      : this.monitoringEventType = _parseMonitoringEventType(json['event'])!,
+        this.monitoringState = _parseMonitoringState(json['state'])!,
         this.region = Region.fromJson(json['region']);
 
   /// Parsing dynamic state into [MonitoringState].
-  static MonitoringState _parseMonitoringState(dynamic state) {
+  static MonitoringState? _parseMonitoringState(dynamic state) {
     if (!(state is String)) {
       return null;
     }
@@ -51,7 +51,7 @@ class MonitoringResult {
   }
 
   /// Parsing dynamic event into [MonitoringEventType]
-  static MonitoringEventType _parseMonitoringEventType(dynamic event) {
+  static MonitoringEventType? _parseMonitoringEventType(dynamic event) {
     if (event == 'didEnterRegion') {
       return MonitoringEventType.didEnterRegion;
     } else if (event == 'didExitRegion') {
